@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Time Gems Hub — Luxury Watches</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════ RESET & ROOT ══════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#D4A843;--gold2:#F0C866;--gold3:#A07830;
+  --bg:#0C0A06;--bg2:#141208;--bg3:#1C1810;--bg4:#241E12;
+  --glass:rgba(255,220,100,0.06);
+  --border:rgba(212,168,67,0.2);--border2:rgba(212,168,67,0.4);
+  --text:#F5EDD8;--text2:#C4B896;--text3:#8A7A5A;
+  --red:#E05050;--green:#4CAF80;
+  --shadow:0 8px 40px rgba(0,0,0,0.6);
+  --r:6px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;min-height:100vh}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--gold3);border-radius:3px}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;font-family:'DM Sans',sans-serif}
+input,select,textarea{font-family:'DM Sans',sans-serif}
+img{display:block;max-width:100%}
+
+/* ══════════════ UTILITY ══════════════ */
+.hidden{display:none!important}
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+.container{max-width:1300px;margin:0 auto;padding:0 5vw}
+
+/* ══════════════ TOAST ══════════════ */
+#toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;flex-direction:column;gap:.6rem}
+.toast-item{
+  padding:.85rem 1.5rem;border-radius:var(--r);font-size:.85rem;font-weight:500;
+  display:flex;align-items:center;gap:.7rem;
+  animation:toastIn .3s ease,toastOut .3s ease 2.7s forwards;
+  min-width:220px;max-width:340px;
+  backdrop-filter:blur(12px);
+}
+.toast-item.success{background:rgba(76,175,128,.15);border:1px solid rgba(76,175,128,.4);color:#7ED4A8}
+.toast-item.error{background:rgba(224,80,80,.15);border:1px solid rgba(224,80,80,.4);color:#E08080}
+.toast-item.info{background:rgba(212,168,67,.15);border:1px solid rgba(212,168,67,.4);color:var(--gold2)}
+@keyframes toastIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateX(30px)}}
+
+/* ══════════════ NAV ══════════════ */
+#navbar{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 5vw;
+  background:rgba(12,10,6,.92);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(16px);
+  transition:padding .3s;
+}
+.logo{display:flex;flex-direction:column;cursor:pointer;line-height:1}
+.logo-main{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:600;color:var(--gold);letter-spacing:.05em}
+.logo-sub{font-size:.55rem;letter-spacing:.4em;text-transform:uppercase;color:var(--text3);margin-top:2px}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text2);transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+.nav-right{display:flex;align-items:center;gap:1rem}
+.nav-btn{background:none;color:var(--text2);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;padding:.45rem .9rem;border:1px solid transparent;border-radius:var(--r);transition:all .3s}
+.nav-btn:hover{color:var(--gold);border-color:var(--border)}
+.nav-btn.primary{background:var(--gold);color:#0C0A06;font-weight:600;border-color:var(--gold)}
+.nav-btn.primary:hover{background:var(--gold2)}
+.cart-btn{position:relative;background:none;color:var(--text2);padding:.4rem;transition:color .3s}
+.cart-btn:hover{color:var(--gold)}
+.cart-count{position:absolute;top:-4px;right:-4px;background:var(--gold);color:#0C0A06;font-size:.6rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.cart-count.hidden{display:none}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;padding:.4rem}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--text2);transition:all .3s}
+.nav-user{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--text2)}
+.nav-user-dot{width:7px;height:7px;background:var(--green);border-radius:50%}
+
+/* ══════════════ HERO ══════════════ */
+.hero{
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(212,168,67,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 80% at 20% 80%, rgba(212,168,67,.04) 0%, transparent 60%),
+    var(--bg);
+  display:grid;grid-template-columns:1fr 1fr;align-items:center;
+  padding:8rem 5vw 5rem;gap:4rem;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4A843' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.hero-eyebrow{font-size:.65rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:.8rem}
+.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--gold)}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,5vw,5.5rem);font-weight:700;line-height:1.05;margin-bottom:1.5rem}
+.hero-title .accent{color:var(--gold);font-style:italic}
+.hero-desc{color:var(--text2);font-size:.95rem;line-height:1.9;max-width:440px;margin-bottom:2.5rem}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:3.5rem}
+.btn-gold{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 2rem;background:var(--gold);color:#0C0A06;font-size:.75rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;border:none;border-radius:var(--r);transition:all .3s;cursor:pointer}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,168,67,.3)}
+.btn-outline{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 2rem;background:transparent;color:var(--text);font-size:.75rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--border2);border-radius:var(--r);transition:all .3s;cursor:pointer}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.hero-stats{display:flex;gap:2.5rem}
+.hero-stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);line-height:1}
+.hero-stat-label{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text3);margin-top:.3rem}
+.hero-divider{width:1px;background:var(--border);align-self:stretch}
+
+/* Hero right - watch visual */
+.hero-right{display:flex;align-items:center;justify-content:center;position:relative}
+.hero-glow{
+  position:absolute;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(212,168,67,.12) 0%,transparent 70%);
+  border-radius:50%;animation:pulse 4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.1);opacity:1}}
+.hero-watch-showcase{
+  position:relative;width:380px;height:380px;
+  background:radial-gradient(circle at 40% 35%,var(--bg4) 0%,var(--bg) 70%);
+  border-radius:50%;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 80px rgba(212,168,67,.08),inset 0 1px 0 rgba(212,168,67,.1);
+  overflow:hidden;
+}
+.hero-watch-img{width:280px;height:280px;object-fit:cover;border-radius:50%;animation:watchFloat 6s ease-in-out infinite;filter:drop-shadow(0 20px 40px rgba(0,0,0,.6))}
+@keyframes watchFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hero-ring{
+  position:absolute;border:1px dashed rgba(212,168,67,.18);border-radius:50%;
+  animation:spin 25s linear infinite;
+}
+.hero-ring:nth-child(1){width:420px;height:420px}
+.hero-ring:nth-child(2){width:460px;height:460px;animation-direction:reverse;animation-duration:35s}
+.hero-badge-float{
+  position:absolute;padding:.6rem 1rem;
+  background:rgba(12,10,6,.9);border:1px solid var(--border2);border-radius:var(--r);
+  font-size:.72rem;backdrop-filter:blur(8px);
+  animation:badgeFloat 5s ease-in-out infinite;
+}
+.hero-badge-float:nth-child(5){top:20%;right:-20px;animation-delay:.5s}
+.hero-badge-float:nth-child(6){bottom:25%;left:-10px;animation-delay:1.2s}
+.badge-icon{font-size:1rem;margin-bottom:.2rem}
+.badge-text{color:var(--gold);font-weight:600}
+.badge-sub{color:var(--text3);font-size:.62rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes badgeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ══════════════ MARQUEE ══════════════ */
+.marquee-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2);padding:.9rem 0;overflow:hidden}
+.marquee-inner{display:flex;gap:2rem;animation:marquee 20s linear infinite;white-space:nowrap}
+.marquee-inner:hover{animation-play-state:paused}
+.m-item{display:inline-flex;align-items:center;gap:.8rem;font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--text3);flex-shrink:0}
+.m-dot{width:4px;height:4px;background:var(--gold);border-radius:50%;flex-shrink:0}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ══════════════ SECTION HEADER ══════════════ */
+.section-eyebrow{font-size:.63rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;display:flex;align-items:center;gap:.8rem}
+.section-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold)}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,3rem);font-weight:700;line-height:1.15;margin-bottom:.8rem}
+.section-title .accent{color:var(--gold);font-style:italic}
+.section-sub{color:var(--text2);font-size:.88rem;line-height:1.8}
+
+/* ══════════════ SHOP PAGE ══════════════ */
+#shopPage{padding-top:80px}
+.shop-hero{
+  background:linear-gradient(to bottom,var(--bg2),var(--bg));
+  padding:4rem 5vw 3rem;text-align:center;
+  border-bottom:1px solid var(--border);
+}
+.shop-hero .section-eyebrow{justify-content:center}
+.shop-hero .section-eyebrow::before{display:none}
+
+.shop-layout{display:grid;grid-template-columns:260px 1fr;gap:2rem;padding:2.5rem 5vw 5rem;max-width:1300px;margin:0 auto}
+
+/* Filters sidebar */
+.filters-sidebar{
+  position:sticky;top:100px;height:fit-content;
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  padding:1.5rem;
+}
+.filter-title{font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)}
+.filter-group{margin-bottom:1.5rem}
+.filter-label{font-size:.75rem;font-weight:500;color:var(--text2);margin-bottom:.8rem;display:block}
+.filter-options{display:flex;flex-direction:column;gap:.5rem}
+.filter-chip{
+  padding:.45rem .9rem;border:1px solid var(--border);border-radius:20px;
+  font-size:.75rem;color:var(--text2);background:none;text-align:left;
+  transition:all .25s;cursor:pointer;
+}
+.filter-chip:hover{border-color:var(--gold);color:var(--text)}
+.filter-chip.active{background:rgba(212,168,67,.12);border-color:var(--gold);color:var(--gold)}
+.price-range{display:flex;gap:.5rem;align-items:center}
+.price-input{
+  flex:1;padding:.5rem .7rem;background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r);color:var(--text);font-size:.78rem;outline:none;
+  transition:border-color .3s;
+}
+.price-input:focus{border-color:var(--gold)}
+.price-sep{color:var(--text3);font-size:.8rem}
+.sort-select{
+  width:100%;padding:.55rem .8rem;background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r);color:var(--text);font-size:.78rem;outline:none;cursor:pointer;
+}
+
+/* Products grid */
+.shop-main{}
+.shop-top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.search-wrap{position:relative;flex:1;max-width:340px}
+.search-input{
+  width:100%;padding:.7rem 1rem .7rem 2.6rem;
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  color:var(--text);font-size:.85rem;outline:none;transition:border-color .3s;
+}
+.search-input:focus{border-color:var(--gold)}
+.search-icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--text3)}
+.results-count{font-size:.8rem;color:var(--text3)}
+
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+
+/* Product card */
+.product-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  overflow:hidden;transition:all .35s;cursor:pointer;position:relative;
+}
+.product-card:hover{border-color:rgba(212,168,67,.5);transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.product-img-wrap{
+  aspect-ratio:1;overflow:hidden;position:relative;
+  background:radial-gradient(circle at 50% 40%,var(--bg4) 0%,var(--bg) 100%);
+  display:flex;align-items:center;justify-content:center;
+}
+.product-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.product-card:hover .product-img-wrap img{transform:scale(1.06)}
+.product-img-placeholder{font-size:4rem;opacity:.4;transition:transform .5s}
+.product-card:hover .product-img-placeholder{transform:scale(1.1) rotate(-5deg)}
+.product-overlay{
+  position:absolute;inset:0;background:rgba(12,10,6,.6);
+  display:flex;align-items:center;justify-content:center;gap:.8rem;
+  opacity:0;transition:opacity .35s;
+}
+.product-card:hover .product-overlay{opacity:1}
+.overlay-btn{
+  padding:.55rem 1.1rem;font-size:.7rem;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;border-radius:var(--r);transition:all .25s;cursor:pointer;
+}
+.overlay-btn.view{background:var(--gold);color:#0C0A06;border:none}
+.overlay-btn.view:hover{background:var(--gold2)}
+.overlay-btn.cart{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.2)}
+.overlay-btn.cart:hover{border-color:var(--gold);color:var(--gold)}
+.p-badge{
+  position:absolute;top:.8rem;left:.8rem;
+  padding:.25rem .65rem;font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  border-radius:3px;
+}
+.p-badge.sale{background:var(--red);color:#fff}
+.p-badge.new{background:var(--gold);color:#0C0A06}
+.p-badge.rare{background:var(--bg4);color:var(--gold);border:1px solid var(--border2)}
+.p-badge.limited{background:linear-gradient(135deg,#3a2a0a,#6b4c0f);color:var(--gold2);border:1px solid var(--border)}
+.p-badge.bestseller{background:rgba(76,175,128,.2);color:#7ED4A8;border:1px solid rgba(76,175,128,.4)}
+.p-wish{
+  position:absolute;top:.8rem;right:.8rem;
+  width:32px;height:32px;border:1px solid var(--border);border-radius:50%;
+  background:rgba(12,10,6,.7);display:flex;align-items:center;justify-content:center;
+  transition:all .3s;backdrop-filter:blur(4px);
+}
+.p-wish:hover{border-color:var(--gold);color:var(--gold)}
+.p-wish.active{background:rgba(212,168,67,.15);border-color:var(--gold);color:var(--gold)}
+
+.product-info{padding:1.1rem}
+.p-brand{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}
+.p-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;line-height:1.3;margin-bottom:.5rem}
+.p-specs{font-size:.72rem;color:var(--text3);margin-bottom:.8rem}
+.p-price-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.p-price{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold);font-weight:700}
+.p-original{font-size:.82rem;color:var(--text3);text-decoration:line-through}
+.p-discount{font-size:.68rem;font-weight:600;color:var(--red);background:rgba(224,80,80,.1);padding:.15rem .45rem;border-radius:3px}
+.p-rating{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--text2)}
+.stars{color:var(--gold);letter-spacing:.05em}
+
+/* ══════════════ PRODUCT DETAIL PAGE ══════════════ */
+#detailPage{padding-top:80px;background:var(--bg)}
+.detail-back{padding:1.5rem 5vw;display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--text2);cursor:pointer;transition:color .3s;max-width:1300px;margin:0 auto}
+.detail-back:hover{color:var(--gold)}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;padding:0 5vw 5rem;max-width:1300px;margin:0 auto;align-items:start}
+.detail-gallery{}
+.gallery-main{
+  aspect-ratio:1;overflow:hidden;border-radius:var(--r);border:1px solid var(--border);
+  background:radial-gradient(circle at 40% 35%,var(--bg4),var(--bg));
+  display:flex;align-items:center;justify-content:center;margin-bottom:1rem;
+}
+.gallery-main img{width:100%;height:100%;object-fit:cover}
+.gallery-thumbs{display:flex;gap:.7rem}
+.gallery-thumb{
+  width:72px;height:72px;border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--border);cursor:pointer;transition:border-color .3s;
+  background:var(--bg3);display:flex;align-items:center;justify-content:center;
+}
+.gallery-thumb.active{border-color:var(--gold)}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover}
+.gallery-thumb:hover{border-color:var(--border2)}
+
+.detail-info{}
+.detail-eyebrow{font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+.detail-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,2.5vw,2.5rem);font-weight:700;line-height:1.15;margin-bottom:.6rem}
+.detail-model{font-size:.78rem;color:var(--text3);margin-bottom:1rem}
+.detail-rating-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.detail-stars{color:var(--gold);font-size:1.05rem}
+.detail-reviews{font-size:.8rem;color:var(--text2)}
+.detail-stock{font-size:.78rem;padding:.25rem .7rem;border-radius:3px;display:inline-flex;align-items:center;gap:.4rem}
+.detail-stock.in{background:rgba(76,175,128,.1);color:#7ED4A8;border:1px solid rgba(76,175,128,.3)}
+.detail-stock.low{background:rgba(224,160,80,.1);color:#E0A050;border:1px solid rgba(224,160,80,.3)}
+
+.detail-price-block{margin-bottom:1.8rem}
+.detail-price{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--gold);font-weight:700;line-height:1}
+.detail-price-row{display:flex;align-items:center;gap:1rem;margin-bottom:.4rem}
+.detail-original{font-size:1rem;color:var(--text3);text-decoration:line-through}
+.detail-discount-badge{background:rgba(224,80,80,.15);color:var(--red);border:1px solid rgba(224,80,80,.25);padding:.3rem .8rem;border-radius:var(--r);font-size:.8rem;font-weight:600}
+.detail-savings{font-size:.82rem;color:var(--green)}
+
+.detail-desc{font-size:.88rem;line-height:1.9;color:var(--text2);margin-bottom:1.8rem;padding-bottom:1.8rem;border-bottom:1px solid var(--border)}
+
+.detail-features{margin-bottom:1.8rem}
+.detail-features h4{font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+.feature-tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.feature-tag{padding:.3rem .8rem;border:1px solid var(--border);border-radius:20px;font-size:.73rem;color:var(--text2);background:var(--glass)}
+
+.qty-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.qty-label{font-size:.75rem;color:var(--text2)}
+.qty-control{display:flex;align-items:center;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.qty-btn{width:36px;height:36px;background:var(--bg3);color:var(--text);font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .25s;cursor:pointer;border:none}
+.qty-btn:hover{background:var(--gold);color:#0C0A06}
+.qty-num{width:44px;text-align:center;font-size:.9rem;font-weight:500;background:none;border:none;color:var(--text);padding:.5rem 0}
+
+.detail-ctas{display:flex;gap:1rem;margin-bottom:2rem}
+.btn-buy{flex:1;padding:1rem;background:var(--gold);color:#0C0A06;font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;border:none;border-radius:var(--r);transition:all .3s;cursor:pointer}
+.btn-buy:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,168,67,.3)}
+.btn-cart-add{flex:1;padding:1rem;background:transparent;color:var(--text);font-size:.78rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--border2);border-radius:var(--r);transition:all .3s;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem}
+.btn-cart-add:hover{border-color:var(--gold);color:var(--gold)}
+
+.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.spec-item{padding:.7rem 1rem;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)}
+.spec-key{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text3);margin-bottom:.25rem}
+.spec-val{font-size:.83rem;color:var(--text);font-weight:400}
+
+/* ══════════════ CART SIDEBAR ══════════════ */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:600;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(4px)}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-sidebar{
+  position:fixed;top:0;right:0;bottom:0;width:420px;max-width:95vw;
+  background:var(--bg2);border-left:1px solid var(--border);
+  z-index:700;display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);
+}
+.cart-sidebar.open{transform:none}
+.cart-header{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cart-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600}
+.cart-close{background:none;color:var(--text2);font-size:1.4rem;padding:.2rem;transition:color .3s}
+.cart-close:hover{color:var(--gold)}
+.cart-items{flex:1;overflow-y:auto;padding:1rem}
+.cart-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1rem;color:var(--text3)}
+.cart-empty-icon{font-size:3rem;opacity:.4}
+.cart-item{display:flex;gap:1rem;padding:1rem;border:1px solid var(--border);border-radius:var(--r);margin-bottom:.8rem;background:var(--bg3);position:relative;transition:border-color .3s}
+.cart-item:hover{border-color:var(--border2)}
+.ci-img{width:72px;height:72px;border-radius:var(--r);overflow:hidden;flex-shrink:0;background:var(--bg4);display:flex;align-items:center;justify-content:center}
+.ci-img img{width:100%;height:100%;object-fit:cover}
+.ci-info{flex:1;min-width:0}
+.ci-brand{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold)}
+.ci-name{font-size:.88rem;font-weight:500;margin-bottom:.4rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-price{font-family:'Playfair Display',serif;font-size:1rem;color:var(--gold)}
+.ci-qty-row{display:flex;align-items:center;gap:.5rem;margin-top:.4rem}
+.ci-qty-btn{width:24px;height:24px;background:var(--bg4);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:.85rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.ci-qty-btn:hover{border-color:var(--gold);color:var(--gold)}
+.ci-qty-num{font-size:.82rem;min-width:20px;text-align:center}
+.ci-remove{position:absolute;top:.7rem;right:.7rem;background:none;color:var(--text3);font-size:.9rem;padding:.2rem;transition:color .3s;cursor:pointer}
+.ci-remove:hover{color:var(--red)}
+.cart-footer{padding:1.5rem;border-top:1px solid var(--border)}
+.cart-subtotal{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.cart-subtotal-label{font-size:.78rem;color:var(--text2)}
+.cart-subtotal-val{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold);font-weight:700}
+.btn-checkout{width:100%;padding:1rem;background:var(--gold);color:#0C0A06;font-size:.78rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;border:none;border-radius:var(--r);transition:all .3s;cursor:pointer}
+.btn-checkout:hover{background:var(--gold2);transform:translateY(-1px)}
+
+/* ══════════════ MODAL (Login/Register/Order) ══════════════ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:800;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(6px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding:2.5rem;
+  transform:scale(.95) translateY(20px);transition:transform .3s;
+}
+.modal-overlay.open .modal{transform:none}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600}
+.modal-close{background:none;color:var(--text2);font-size:1.4rem;padding:.2rem;transition:color .3s;cursor:pointer}
+.modal-close:hover{color:var(--gold)}
+.modal-logo{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:1.5rem}
+.modal-logo-text{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold)}
+.form-group{margin-bottom:1.2rem}
+.form-label{display:block;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem}
+.form-input{
+  width:100%;padding:.85rem 1rem;background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r);color:var(--text);font-size:.88rem;outline:none;
+  transition:border-color .3s;
+}
+.form-input:focus{border-color:var(--gold)}
+.form-input::placeholder{color:var(--text3)}
+.form-input.error{border-color:var(--red)}
+.form-error{font-size:.73rem;color:var(--red);margin-top:.35rem}
+.form-divider{text-align:center;font-size:.75rem;color:var(--text3);margin:1.2rem 0;position:relative}
+.form-divider::before,.form-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)}
+.form-divider::before{left:0}
+.form-divider::after{right:0}
+.btn-form{width:100%;padding:.9rem;background:var(--gold);color:#0C0A06;font-size:.78rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;border:none;border-radius:var(--r);transition:all .3s;cursor:pointer;margin-top:.5rem}
+.btn-form:hover{background:var(--gold2)}
+.form-switch{text-align:center;margin-top:1.2rem;font-size:.82rem;color:var(--text2)}
+.form-switch a{color:var(--gold);cursor:pointer;text-decoration:underline}
+
+/* ══════════════ CHECKOUT MODAL ══════════════ */
+.checkout-steps{display:flex;gap:0;margin-bottom:2rem;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.checkout-step{flex:1;padding:.6rem;text-align:center;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);background:var(--bg3);transition:all .3s}
+.checkout-step.active{background:var(--gold);color:#0C0A06;font-weight:600}
+.checkout-step.done{background:rgba(76,175,128,.1);color:#7ED4A8}
+.order-summary-mini{background:var(--bg3);border-radius:var(--r);border:1px solid var(--border);padding:1rem;margin-bottom:1.5rem}
+.osm-item{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;font-size:.83rem;color:var(--text2)}
+.osm-item.total{border-top:1px solid var(--border);padding-top:.8rem;margin-top:.4rem}
+.osm-item.total span{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold);font-weight:700}
+.payment-options{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem}
+.pay-opt{
+  padding:.7rem 1rem;border:1px solid var(--border);border-radius:var(--r);
+  background:var(--bg3);color:var(--text2);font-size:.78rem;cursor:pointer;
+  display:flex;align-items:center;gap:.5rem;transition:all .3s;
+}
+.pay-opt:hover{border-color:var(--border2)}
+.pay-opt.selected{border-color:var(--gold);color:var(--gold);background:rgba(212,168,67,.07)}
+.pay-opt input{accent-color:var(--gold)}
+.success-check{text-align:center;padding:2rem 0}
+.success-icon{font-size:3.5rem;margin-bottom:1rem;animation:popIn .5s cubic-bezier(.3,1.3,.4,1)}
+@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+.success-title{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:.5rem}
+.success-subtitle{color:var(--text2);font-size:.85rem;margin-bottom:1.5rem}
+.order-id-badge{
+  display:inline-block;padding:.5rem 1.2rem;
+  background:rgba(212,168,67,.1);border:1px solid var(--border2);
+  border-radius:var(--r);font-family:'Playfair Display',serif;
+  font-size:1.1rem;color:var(--gold);letter-spacing:.05em;
+}
+
+/* ══════════════ HOME PAGE ══════════════ */
+.features-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2)}
+.feature-item{padding:2rem 1.5rem;border-right:1px solid var(--border);display:flex;align-items:flex-start;gap:1rem;transition:background .3s}
+.feature-item:last-child{border-right:none}
+.feature-item:hover{background:var(--glass)}
+.feat-icon{font-size:1.6rem;flex-shrink:0}
+.feat-title{font-size:.78rem;font-weight:600;margin-bottom:.25rem;letter-spacing:.08em}
+.feat-sub{font-size:.72rem;color:var(--text3);line-height:1.6}
+
+/* ══════════════ ORDERS PAGE ══════════════ */
+#ordersPage{padding-top:100px;min-height:100vh;padding-bottom:5rem}
+.orders-wrap{max-width:900px;margin:0 auto;padding:0 5vw}
+.order-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  margin-bottom:1.2rem;overflow:hidden;
+}
+.order-card-header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;cursor:pointer;transition:background .3s}
+.order-card-header:hover{background:var(--glass)}
+.order-id{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--gold)}
+.order-date{font-size:.72rem;color:var(--text3);margin-top:.2rem}
+.order-status{padding:.3rem .8rem;border-radius:3px;font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.order-status.confirmed{background:rgba(76,175,128,.12);color:#7ED4A8;border:1px solid rgba(76,175,128,.3)}
+.order-total{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold)}
+.order-items{padding:1.2rem 1.5rem;border-top:1px solid var(--border);display:none}
+.order-items.open{display:block}
+.order-item-row{display:flex;align-items:center;gap:1rem;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.85rem;color:var(--text2)}
+.order-item-row:last-child{border-bottom:none}
+
+/* ══════════════ FOOTER ══════════════ */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:4rem 5vw 2rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;max-width:1300px;margin:0 auto 3rem}
+.footer-brand-desc{font-size:.82rem;line-height:1.9;color:var(--text3);margin:1rem 0 1.5rem}
+.footer-col h5{font-size:.63rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.footer-col li a{font-size:.82rem;color:var(--text3);transition:color .3s}
+.footer-col li a:hover{color:var(--text)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;max-width:1300px;margin:0 auto}
+.footer-copy{font-size:.73rem;color:var(--text3)}
+.footer-pays{display:flex;gap:.4rem}
+.pay-chip{padding:.25rem .6rem;border:1px solid var(--border);border-radius:3px;font-size:.6rem;color:var(--text3);letter-spacing:.12em;text-transform:uppercase}
+
+/* ══════════════ LOADING ══════════════ */
+.loading-overlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity .5s}
+.loading-overlay.hide{opacity:0;pointer-events:none}
+.loader{display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+.loader-ring{width:56px;height:56px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin2 1s linear infinite}
+@keyframes spin2{to{transform:rotate(360deg)}}
+.loader-text{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold);letter-spacing:.15em}
+
+/* ══════════════ RESPONSIVE ══════════════ */
+@media(max-width:1100px){
+  .hero{grid-template-columns:1fr;text-align:center;padding:7rem 5vw 4rem}
+  .hero-eyebrow{justify-content:center}
+  .hero-eyebrow::before{display:none}
+  .hero-desc{margin:0 auto 2.5rem}
+  .hero-ctas{justify-content:center}
+  .hero-stats{justify-content:center}
+  .hero-right{display:none}
+  .shop-layout{grid-template-columns:1fr}
+  .filters-sidebar{position:static;display:none}
+  .filters-sidebar.mobile-open{display:block}
+  .products-grid{grid-template-columns:repeat(2,1fr)}
+  .features-strip{grid-template-columns:repeat(2,1fr)}
+  .feature-item:nth-child(2){border-right:none}
+  .detail-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:2rem}
+}
+@media(max-width:680px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .products-grid{grid-template-columns:1fr}
+  .features-strip{grid-template-columns:1fr}
+  .feature-item{border-right:none;border-bottom:1px solid var(--border)}
+  .footer-grid{grid-template-columns:1fr}
+  .specs-grid{grid-template-columns:1fr}
+  .detail-ctas{flex-direction:column}
+  .hero-stats{flex-wrap:wrap;gap:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loader">
+    <div class="loader-ring"></div>
+    <div class="loader-text">Time Gems Hub</div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div id="toast"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="logo" onclick="showPage('home')">
+    <div class="logo-main">⌚ Time Gems Hub</div>
+    <div class="logo-sub">Luxury Timepieces</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')" id="nav-home">Home</a></li>
+    <li><a href="#" onclick="showPage('shop')" id="nav-shop">Shop</a></li>
+    <li><a href="#" onclick="showPage('orders')" id="nav-orders">My Orders</a></li>
+  </ul>
+  <div class="nav-right">
+    <div id="navAuthArea"></div>
+    <button class="cart-btn" onclick="toggleCart()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <span class="cart-count hidden" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <div class="cart-title">Your Cart</div>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-subtotal">
+      <span class="cart-subtotal-label">Subtotal</span>
+      <span class="cart-subtotal-val" id="cartTotal">$0</span>
+    </div>
+    <button class="btn-checkout" onclick="openCheckout()">Proceed to Checkout →</button>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="authTitle">Sign In</div>
+      <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+    </div>
+    <div class="modal-logo">
+      <span style="font-size:1.3rem">⌚</span>
+      <span class="modal-logo-text">Time Gems Hub</span>
+    </div>
+    <!-- Login Form -->
+    <div id="loginForm">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="your@email.com"/>
+        <div class="form-error hidden" id="loginEmailErr"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="loginPassword" placeholder="Enter password"/>
+        <div class="form-error hidden" id="loginPassErr"></div>
+      </div>
+      <div class="form-error hidden" id="loginGlobalErr"></div>
+      <button class="btn-form" onclick="doLogin()">Sign In →</button>
+      <div class="form-switch">Don't have an account? <a onclick="switchToRegister()">Create one</a></div>
+    </div>
+    <!-- Register Form -->
+    <div id="registerForm" style="display:none">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" type="text" id="regName" placeholder="Your full name"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="regEmail" placeholder="your@email.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="regPassword" placeholder="Min. 6 characters"/>
+      </div>
+      <div class="form-error hidden" id="regGlobalErr"></div>
+      <button class="btn-form" onclick="doRegister()">Create Account →</button>
+      <div class="form-switch">Already have an account? <a onclick="switchToLogin()">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-header">
+      <div class="modal-title">Checkout</div>
+      <button class="modal-close" onclick="closeModal('checkoutModal')">✕</button>
+    </div>
+    <div class="checkout-steps" id="checkoutSteps">
+      <div class="checkout-step active" id="step1">1. Shipping</div>
+      <div class="checkout-step" id="step2">2. Payment</div>
+      <div class="checkout-step" id="step3">3. Confirm</div>
+    </div>
+    <div id="checkoutContent"></div>
+  </div>
+</div>
+
+<!-- HOME PAGE -->
+<div class="page active" id="homePage">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">New Arrivals 2025</div>
+      <h1 class="hero-title">
+        Where <span class="accent">Precision</span><br>
+        Meets <span class="accent">Prestige</span>
+      </h1>
+      <p class="hero-desc">Discover our exclusive collection of the world's finest timepieces — from Swiss dress watches to bold sport chronographs. Every second matters.</p>
+      <div class="hero-ctas">
+        <button class="btn-gold" onclick="showPage('shop')">
+          Shop Collection
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <button class="btn-outline" onclick="scrollToFeatures()">Learn More</button>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num">500+</div>
+          <div class="hero-stat-label">Timepieces</div>
+        </div>
+        <div class="hero-divider"></div>
+        <div>
+          <div class="hero-stat-num">50+</div>
+          <div class="hero-stat-label">Brands</div>
+        </div>
+        <div class="hero-divider"></div>
+        <div>
+          <div class="hero-stat-num">99%</div>
+          <div class="hero-stat-label">Satisfaction</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-ring"></div>
+      <div class="hero-ring"></div>
+      <div class="hero-glow"></div>
+      <div class="hero-watch-showcase">
+        <img class="hero-watch-img" src="https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=500&q=85" alt="Luxury Watch" loading="eager"/>
+      </div>
+      <div class="hero-badge-float">
+        <div class="badge-icon">🛡️</div>
+        <div class="badge-text">Certified</div>
+        <div class="badge-sub">Authentic</div>
+      </div>
+      <div class="hero-badge-float">
+        <div class="badge-icon">⚡</div>
+        <div class="badge-text">Fast Delivery</div>
+        <div class="badge-sub">2-5 Days</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-bar">
+    <div class="marquee-inner" id="marqueeInner"></div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features-strip" id="featuresSection">
+    <div class="feature-item">
+      <div class="feat-icon">🔐</div>
+      <div><div class="feat-title">100% Authentic</div><div class="feat-sub">Every watch is authenticated by our Swiss-trained experts</div></div>
+    </div>
+    <div class="feature-item">
+      <div class="feat-icon">🚚</div>
+      <div><div class="feat-title">Free Insured Shipping</div><div class="feat-sub">Fully insured worldwide delivery on every order</div></div>
+    </div>
+    <div class="feature-item">
+      <div class="feat-icon">↩️</div>
+      <div><div class="feat-title">30-Day Returns</div><div class="feat-sub">Not happy? Return in 30 days, no questions asked</div></div>
+    </div>
+    <div class="feature-item">
+      <div class="feat-icon">🏅</div>
+      <div><div class="feat-title">Warranty Included</div><div class="feat-sub">Full manufacturer warranty on all timepieces</div></div>
+    </div>
+  </div>
+
+  <!-- FEATURED WATCHES -->
+  <section style="padding:5rem 5vw;background:var(--bg)">
+    <div class="container" style="padding:0">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem;flex-wrap:wrap;gap:1rem">
+        <div>
+          <div class="section-eyebrow">Hand-Picked</div>
+          <h2 class="section-title">Featured <span class="accent">Timepieces</span></h2>
+        </div>
+        <button class="btn-outline" onclick="showPage('shop')">View All →</button>
+      </div>
+      <div class="products-grid" id="featuredGrid"></div>
+    </div>
+  </section>
+
+  <!-- DEAL BANNER -->
+  <section style="padding:0 5vw 5rem">
+    <div style="
+      background:linear-gradient(135deg,var(--bg4) 0%,var(--bg2) 100%);
+      border:1px solid var(--border);border-radius:10px;
+      display:grid;grid-template-columns:1fr 1fr;align-items:center;
+      padding:4rem 5vw;gap:3rem;overflow:hidden;position:relative;
+    ">
+      <div style="position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(212,168,67,.08) 0%,transparent 70%)"></div>
+      <div>
+        <div class="section-eyebrow">Exclusive Deal</div>
+        <h2 class="section-title">Up to <span class="accent">30% Off</span><br>This Week</h2>
+        <p style="color:var(--text2);font-size:.88rem;line-height:1.9;margin-bottom:2rem">Our biggest sale of the year. Premium Swiss watches, luxury chronographs, and classic dress watches at unbeatable prices. Limited stock available.</p>
+        <button class="btn-gold" onclick="showPage('shop',{badge:'sale'})">Shop Sale →</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div style="display:flex;align-items:center;gap:1rem;padding:1rem;background:var(--glass);border:1px solid var(--border);border-radius:var(--r)">
+          <span style="font-size:1.8rem">⌚</span>
+          <div><div style="font-size:.85rem;font-weight:500">Swiss Movements</div><div style="font-size:.72rem;color:var(--text3)">Certified & Genuine</div></div>
+          <span style="margin-left:auto;color:var(--green);font-size:.78rem;font-weight:600">In Stock</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;padding:1rem;background:var(--glass);border:1px solid var(--border);border-radius:var(--r)">
+          <span style="font-size:1.8rem">🛡️</span>
+          <div><div style="font-size:.85rem;font-weight:500">GIA Certified</div><div style="font-size:.72rem;color:var(--text3)">Diamond Dials</div></div>
+          <span style="margin-left:auto;color:var(--gold);font-size:.78rem;font-weight:600">Premium</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;padding:1rem;background:var(--glass);border:1px solid var(--border);border-radius:var(--r)">
+          <span style="font-size:1.8rem">📦</span>
+          <div><div style="font-size:.85rem;font-weight:500">Insured Delivery</div><div style="font-size:.72rem;color:var(--text3)">2-5 Business Days</div></div>
+          <span style="margin-left:auto;color:var(--green);font-size:.78rem;font-weight:600">Free</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="logo-main">⌚ Time Gems Hub</div>
+        <p class="footer-brand-desc">Your destination for the world's finest luxury timepieces. Authentic, certified, and delivered with care directly to your door.</p>
+        <div style="display:flex;gap:.6rem">
+          <a href="#" style="width:34px;height:34px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--text3);transition:all .3s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">f</a>
+          <a href="#" style="width:34px;height:34px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--text3);transition:all .3s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">𝕏</a>
+          <a href="#" style="width:34px;height:34px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--text3);transition:all .3s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">in</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Shop</h5>
+        <ul>
+          <li><a href="#" onclick="showPage('shop')">All Watches</a></li>
+          <li><a href="#" onclick="showPage('shop',{category:'Luxury'})">Luxury</a></li>
+          <li><a href="#" onclick="showPage('shop',{category:'Dive'})">Dive Watches</a></li>
+          <li><a href="#" onclick="showPage('shop',{category:'Chronograph'})">Chronographs</a></li>
+          <li><a href="#" onclick="showPage('shop',{category:'Dress'})">Dress Watches</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#">Authentication</a></li>
+          <li><a href="#">Watch Servicing</a></li>
+          <li><a href="#">Trade-In</a></li>
+          <li><a href="#">Insurance</a></li>
+          <li><a href="#">Gift Cards</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Time Gems Hub. All rights reserved.</div>
+      <div class="footer-pays">
+        <div class="pay-chip">VISA</div>
+        <div class="pay-chip">MC</div>
+        <div class="pay-chip">AMEX</div>
+        <div class="pay-chip">PayPal</div>
+        <div class="pay-chip">Crypto</div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- SHOP PAGE -->
+<div class="page" id="shopPage">
+  <div class="shop-hero">
+    <div class="section-eyebrow">Our Collection</div>
+    <h2 class="section-title">Luxury <span class="accent">Timepieces</span></h2>
+    <p class="section-sub" style="margin:0 auto;text-align:center;max-width:500px">Explore our curated selection of the world's finest watches from iconic brands</p>
+  </div>
+  <div class="shop-layout">
+    <!-- Sidebar Filters -->
+    <aside class="filters-sidebar" id="filtersSidebar">
+      <div class="filter-title">Filter & Sort</div>
+      <div class="filter-group">
+        <span class="filter-label">Category</span>
+        <div class="filter-options" id="categoryFilters">
+          <button class="filter-chip active" data-cat="All" onclick="setCategory(this,'All')">All Watches</button>
+          <button class="filter-chip" data-cat="Luxury" onclick="setCategory(this,'Luxury')">Luxury</button>
+          <button class="filter-chip" data-cat="Dive" onclick="setCategory(this,'Dive')">Dive Watches</button>
+          <button class="filter-chip" data-cat="Chronograph" onclick="setCategory(this,'Chronograph')">Chronograph</button>
+          <button class="filter-chip" data-cat="Dress" onclick="setCategory(this,'Dress')">Dress Watches</button>
+          <button class="filter-chip" data-cat="Aviation" onclick="setCategory(this,'Aviation')">Aviation</button>
+          <button class="filter-chip" data-cat="Sport Luxury" onclick="setCategory(this,'Sport Luxury')">Sport Luxury</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Price Range</span>
+        <div class="price-range">
+          <input class="price-input" type="number" id="minPrice" placeholder="Min $" onchange="applyFilters()"/>
+          <span class="price-sep">—</span>
+          <input class="price-input" type="number" id="maxPrice" placeholder="Max $" onchange="applyFilters()"/>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Sort By</span>
+        <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+          <option value="">Default</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="discount">Best Discount</option>
+        </select>
+      </div>
+      <button class="filter-chip" onclick="clearFilters()" style="width:100%;justify-content:center;text-align:center;margin-top:.5rem">Clear All Filters</button>
+    </aside>
+    <!-- Products -->
+    <div class="shop-main">
+      <div class="shop-top-bar">
+        <div class="search-wrap">
+          <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input class="search-input" type="text" id="searchInput" placeholder="Search watches, brands..." oninput="applyFilters()"/>
+        </div>
+        <div class="results-count" id="resultsCount">Loading...</div>
+      </div>
+      <div class="products-grid" id="shopGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div class="page" id="detailPage">
+  <div class="detail-back" onclick="history.back()">
+    ← Back to Collection
+  </div>
+  <div class="detail-grid" id="detailContent"></div>
+</div>
+
+<!-- ORDERS PAGE -->
+<div class="page" id="ordersPage">
+  <div class="orders-wrap">
+    <div class="section-eyebrow" style="margin-bottom:.5rem">Your Purchases</div>
+    <h2 class="section-title" style="margin-bottom:2.5rem">My <span class="accent">Orders</span></h2>
+    <div id="ordersList"></div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════ */
+let state = {
+  user: null,
+  watches: [],
+  cart: JSON.parse(localStorage.getItem('tgh_cart') || '[]'),
+  wishlist: JSON.parse(localStorage.getItem('tgh_wish') || '[]'),
+  filters: { category: 'All', search: '', minPrice: '', maxPrice: '', sort: '' },
+  checkoutStep: 1,
+  shippingData: {}
+};
+
+/* ════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', async () => {
+  buildMarquee();
+  await checkAuth();
+  await loadWatches();
+  renderNavAuth();
+  updateCartBadge();
+  renderFeatured();
+  setTimeout(() => {
+    document.getElementById('loadingOverlay').classList.add('hide');
+  }, 900);
+});
+
+function buildMarquee() {
+  const items = ['Swiss Movement','Authentic Guaranteed','Free Shipping','Expert Certified','Lifetime Warranty','Secure Payment','30-Day Returns','Premium Collection'];
+  const track = document.getElementById('marqueeInner');
+  const doubled = [...items,...items,...items,...items];
+  track.innerHTML = doubled.map(t => `<div class="m-item"><span class="m-dot"></span>${t}</div>`).join('');
+}
+
+async function checkAuth() {
+  try {
+    const r = await fetch('/api/me');
+    const d = await r.json();
+    state.user = d.user;
+  } catch(e) { state.user = null; }
+}
+
+async function loadWatches() {
+  try {
+    const r = await fetch('/api/watches');
+    state.watches = await r.json();
+  } catch(e) {
+    // Fallback data if server not running
+    state.watches = FALLBACK_WATCHES;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   PAGES
+════════════════════════════════════════════════ */
+function showPage(page, opts = {}) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(page + 'Page').classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + page);
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo(0, 0);
+  if (page === 'shop') {
+    if (opts.category) { setCategory(document.querySelector(`[data-cat="${opts.category}"]`), opts.category); }
+    applyFilters();
+  }
+  if (page === 'orders') renderOrders();
+}
+
+function scrollToFeatures() {
+  document.getElementById('featuresSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ════════════════════════════════════════════════
+   WATCHES
+════════════════════════════════════════════════ */
+function renderFeatured() {
+  const grid = document.getElementById('featuredGrid');
+  if (!grid || !state.watches.length) return;
+  const picks = state.watches.slice(0, 4);
+  grid.innerHTML = picks.map(w => watchCard(w)).join('');
+}
+
+function watchCard(w) {
+  const inWish = state.wishlist.includes(w.id);
+  const savings = w.originalPrice - w.price;
+  const badgeClass = w.badge?.toLowerCase().replace(' ','-');
+  return `
+  <div class="product-card" onclick="openDetail(${w.id})">
+    <div class="product-img-wrap">
+      <img src="${w.image}" alt="${w.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+      <div class="product-img-placeholder" style="display:none">⌚</div>
+      <div class="product-overlay" onclick="event.stopPropagation()">
+        <button class="overlay-btn view" onclick="openDetail(${w.id})">View</button>
+        <button class="overlay-btn cart" onclick="addToCart(${w.id})">Add to Cart</button>
+      </div>
+      ${w.badge ? `<div class="p-badge ${badgeClass}">${w.badge}</div>` : ''}
+      <button class="p-wish ${inWish?'active':''}" onclick="event.stopPropagation();toggleWish(${w.id},this)" title="Wishlist">♡</button>
+    </div>
+    <div class="product-info">
+      <div class="p-brand">${w.brand}</div>
+      <div class="p-name">${w.name}</div>
+      <div class="p-specs">${w.caseDiameter} · ${w.movement.split('(')[0].trim()}</div>
+      <div class="p-price-row">
+        <span class="p-price">$${w.price.toLocaleString()}</span>
+        <span class="p-original">$${w.originalPrice.toLocaleString()}</span>
+        <span class="p-discount">-${w.discount}%</span>
+      </div>
+      <div class="p-rating">
+        <span class="stars">${'★'.repeat(Math.round(w.rating))}${'☆'.repeat(5-Math.round(w.rating))}</span>
+        <span>${w.rating} (${w.reviews})</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════════
+   SHOP & FILTERS
+════════════════════════════════════════════════ */
+async function applyFilters() {
+  const search = document.getElementById('searchInput')?.value || '';
+  const sort = document.getElementById('sortSelect')?.value || '';
+  const minPrice = document.getElementById('minPrice')?.value || '';
+  const maxPrice = document.getElementById('maxPrice')?.value || '';
+  state.filters = { ...state.filters, search, sort, minPrice, maxPrice };
+
+  const params = new URLSearchParams();
+  if (state.filters.category && state.filters.category !== 'All') params.set('category', state.filters.category);
+  if (search) params.set('search', search);
+  if (sort) params.set('sort', sort);
+  if (minPrice) params.set('minPrice', minPrice);
+  if (maxPrice) params.set('maxPrice', maxPrice);
+
+  let watches;
+  try {
+    const r = await fetch('/api/watches?' + params.toString());
+    watches = await r.json();
+  } catch(e) {
+    watches = filterLocal(FALLBACK_WATCHES, state.filters);
+  }
+
+  const grid = document.getElementById('shopGrid');
+  const count = document.getElementById('resultsCount');
+  if (!grid) return;
+  count.textContent = `${watches.length} watch${watches.length !== 1 ? 'es' : ''} found`;
+  if (!watches.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--text3)">
+      <div style="font-size:3rem;margin-bottom:1rem">🔍</div>
+      <div>No watches found. Try adjusting your filters.</div>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = watches.map(w => watchCard(w)).join('');
+}
+
+function filterLocal(watches, f) {
+  return watches.filter(w => {
+    if (f.category && f.category !== 'All' && w.category !== f.category) return false;
+    if (f.search && !w.name.toLowerCase().includes(f.search.toLowerCase()) && !w.brand.toLowerCase().includes(f.search.toLowerCase())) return false;
+    if (f.minPrice && w.price < Number(f.minPrice)) return false;
+    if (f.maxPrice && w.price > Number(f.maxPrice)) return false;
+    return true;
+  });
+}
+
+function setCategory(el, cat) {
+  state.filters.category = cat;
+  document.querySelectorAll('.filter-chip[data-cat]').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  applyFilters();
+}
+
+function clearFilters() {
+  state.filters = { category: 'All', search: '', minPrice: '', maxPrice: '', sort: '' };
+  document.getElementById('searchInput').value = '';
+  document.getElementById('sortSelect').value = '';
+  document.getElementById('minPrice').value = '';
+  document.getElementById('maxPrice').value = '';
+  document.querySelectorAll('.filter-chip[data-cat]').forEach(c => c.classList.remove('active'));
+  document.querySelector('[data-cat="All"]')?.classList.add('active');
+  applyFilters();
+}
+
+/* ════════════════════════════════════════════════
+   PRODUCT DETAIL
+════════════════════════════════════════════════ */
+async function openDetail(id) {
+  let w;
+  try {
+    const r = await fetch('/api/watches/' + id);
+    w = await r.json();
+  } catch(e) {
+    w = FALLBACK_WATCHES.find(x => x.id === id);
+  }
+  if (!w) return;
+
+  const savings = w.originalPrice - w.price;
+  const imgs = w.images || [w.image];
+
+  document.getElementById('detailContent').innerHTML = `
+  <div class="detail-gallery">
+    <div class="gallery-main">
+      <img id="mainImg" src="${imgs[0]}" alt="${w.name}" style="width:100%;height:100%;object-fit:cover"/>
+    </div>
+    <div class="gallery-thumbs">
+      ${imgs.map((img,i) => `<div class="gallery-thumb ${i===0?'active':''}" onclick="switchImg('${img}',this)">
+        <img src="${img}" alt=""/>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="detail-info">
+    <div class="detail-eyebrow">${w.brand} · ${w.category}</div>
+    <h1 class="detail-title">${w.name}</h1>
+    <div class="detail-model">Ref. ${w.model}</div>
+    <div class="detail-rating-row">
+      <span class="detail-stars">${'★'.repeat(Math.round(w.rating))}${'☆'.repeat(5-Math.round(w.rating))}</span>
+      <span class="detail-reviews">${w.rating}/5 · ${w.reviews} reviews</span>
+      <span class="detail-stock ${w.stock <= 3 ? 'low' : 'in'}">
+        ${w.stock <= 3 ? '⚠️ Only '+w.stock+' left' : '✓ In Stock ('+w.stock+')'}
+      </span>
+    </div>
+    <div class="detail-price-block">
+      <div class="detail-price-row">
+        <div class="detail-price">$${w.price.toLocaleString()}</div>
+        <div class="detail-original">$${w.originalPrice.toLocaleString()}</div>
+        <div class="detail-discount-badge">-${w.discount}% OFF</div>
+      </div>
+      <div class="detail-savings">You save: $${savings.toLocaleString()}</div>
+    </div>
+    <p class="detail-desc">${w.description}</p>
+    <div class="detail-features">
+      <h4>Key Features</h4>
+      <div class="feature-tags">
+        ${w.features.map(f => `<span class="feature-tag">${f}</span>`).join('')}
+      </div>
+    </div>
+    <div class="qty-row">
+      <span class="qty-label">Quantity</span>
+      <div class="qty-control">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <input class="qty-num" type="number" id="detailQty" value="1" min="1" max="${w.stock}" readonly/>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+      </div>
+    </div>
+    <div class="detail-ctas">
+      <button class="btn-buy" onclick="buyNow(${w.id})">Buy Now</button>
+      <button class="btn-cart-add" onclick="addToCart(${w.id},getDetailQty())">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Add to Cart
+      </button>
+    </div>
+    <div>
+      <div style="font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Specifications</div>
+      <div class="specs-grid">
+        <div class="spec-item"><div class="spec-key">Case Material</div><div class="spec-val">${w.caseMaterial}</div></div>
+        <div class="spec-item"><div class="spec-key">Case Diameter</div><div class="spec-val">${w.caseDiameter}</div></div>
+        <div class="spec-item"><div class="spec-key">Movement</div><div class="spec-val">${w.movement}</div></div>
+        <div class="spec-item"><div class="spec-key">Water Resistance</div><div class="spec-val">${w.waterResistance}</div></div>
+        <div class="spec-item"><div class="spec-key">Crystal</div><div class="spec-val">${w.crystalGlass}</div></div>
+        <div class="spec-item"><div class="spec-key">Bracelet</div><div class="spec-val">${w.bracelet}</div></div>
+        <div class="spec-item"><div class="spec-key">Dial Color</div><div class="spec-val">${w.dialColor}</div></div>
+        <div class="spec-item"><div class="spec-key">Power Reserve</div><div class="spec-val">${w.powerReserve}</div></div>
+        <div class="spec-item"><div class="spec-key">Warranty</div><div class="spec-val">${w.warranty}</div></div>
+      </div>
+    </div>
+  </div>`;
+
+  showPage('detail');
+}
+
+function switchImg(src, el) {
+  document.getElementById('mainImg').src = src;
+  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function changeQty(delta) {
+  const el = document.getElementById('detailQty');
+  if (el) el.value = Math.max(1, parseInt(el.value) + delta);
+}
+function getDetailQty() {
+  return parseInt(document.getElementById('detailQty')?.value || 1);
+}
+
+/* ════════════════════════════════════════════════
+   CART
+════════════════════════════════════════════════ */
+function addToCart(watchId, qty = 1) {
+  const watch = state.watches.find(w => w.id === watchId) || FALLBACK_WATCHES.find(w => w.id === watchId);
+  if (!watch) return;
+  const existing = state.cart.find(i => i.id === watchId);
+  if (existing) existing.qty += qty;
+  else state.cart.push({ id: watchId, brand: watch.brand, name: watch.name, price: watch.price, image: watch.image, qty });
+  saveCart();
+  renderCart();
+  toast('Added to cart', 'success');
+}
+
+function removeFromCart(watchId) {
+  state.cart = state.cart.filter(i => i.id !== watchId);
+  saveCart(); renderCart();
+}
+function changeCartQty(watchId, delta) {
+  const item = state.cart.find(i => i.id === watchId);
+  if (item) { item.qty = Math.max(1, item.qty + delta); if (item.qty < 1) return removeFromCart(watchId); }
+  saveCart(); renderCart();
+}
+function saveCart() { localStorage.setItem('tgh_cart', JSON.stringify(state.cart)); updateCartBadge(); }
+function updateCartBadge() {
+  const total = state.cart.reduce((s,i) => s + i.qty, 0);
+  const badge = document.getElementById('cartCount');
+  badge.textContent = total;
+  badge.classList.toggle('hidden', total === 0);
+}
+
+function renderCart() {
+  const el = document.getElementById('cartItems');
+  const footer = document.getElementById('cartFooter');
+  if (!state.cart.length) {
+    el.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">⌚</div><div>Your cart is empty</div><button class="btn-outline" style="margin-top:1rem;font-size:.72rem;padding:.6rem 1.5rem" onclick="showPage('shop');toggleCart()">Browse Watches</button></div>`;
+    footer.style.display = 'none'; return;
+  }
+  el.innerHTML = state.cart.map(item => `
+  <div class="cart-item">
+    <div class="ci-img"><img src="${item.image}" alt="${item.name}" onerror="this.parentNode.innerHTML='⌚'" style="width:100%;height:100%;object-fit:cover"/></div>
+    <div class="ci-info">
+      <div class="ci-brand">${item.brand}</div>
+      <div class="ci-name">${item.name}</div>
+      <div class="ci-price">$${(item.price * item.qty).toLocaleString()}</div>
+      <div class="ci-qty-row">
+        <button class="ci-qty-btn" onclick="changeCartQty(${item.id},-1)">−</button>
+        <span class="ci-qty-num">${item.qty}</span>
+        <button class="ci-qty-btn" onclick="changeCartQty(${item.id},1)">+</button>
+      </div>
+    </div>
+    <button class="ci-remove" onclick="removeFromCart(${item.id})">✕</button>
+  </div>`).join('');
+  const subtotal = state.cart.reduce((s,i) => s + i.price * i.qty, 0);
+  document.getElementById('cartTotal').textContent = '$' + subtotal.toLocaleString();
+  footer.style.display = 'block';
+}
+
+function toggleCart() {
+  renderCart();
+  document.getElementById('cartOverlay').classList.toggle('open');
+  document.getElementById('cartSidebar').classList.toggle('open');
+}
+
+/* ════════════════════════════════════════════════
+   WISHLIST
+════════════════════════════════════════════════ */
+function toggleWish(id, btn) {
+  if (state.wishlist.includes(id)) {
+    state.wishlist = state.wishlist.filter(x => x !== id);
+    btn.classList.remove('active'); toast('Removed from wishlist', 'info');
+  } else {
+    state.wishlist.push(id);
+    btn.classList.add('active'); toast('Added to wishlist ♡', 'success');
+  }
+  localStorage.setItem('tgh_wish', JSON.stringify(state.wishlist));
+}
+
+/* ════════════════════════════════════════════════
+   AUTH
+════════════════════════════════════════════════ */
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function renderNavAuth() {
+  const area = document.getElementById('navAuthArea');
+  if (state.user) {
+    area.innerHTML = `<div class="nav-user">
+      <div class="nav-user-dot"></div>
+      <span>${state.user.name.split(' ')[0]}</span>
+      <button class="nav-btn" onclick="doLogout()">Logout</button>
+    </div>`;
+  } else {
+    area.innerHTML = `<button class="nav-btn" onclick="openModal('authModal');switchToLogin()">Login</button>
+    <button class="nav-btn primary" onclick="openModal('authModal');switchToRegister()">Register</button>`;
+  }
+}
+
+function switchToLogin() {
+  document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('registerForm').style.display = 'none';
+  document.getElementById('authTitle').textContent = 'Sign In';
+  clearAuthErrors();
+}
+function switchToRegister() {
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('registerForm').style.display = 'block';
+  document.getElementById('authTitle').textContent = 'Create Account';
+  clearAuthErrors();
+}
+function clearAuthErrors() {
+  document.querySelectorAll('.form-error').forEach(e => { e.textContent=''; e.classList.add('hidden'); });
+  document.querySelectorAll('.form-input').forEach(i => i.classList.remove('error'));
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  clearAuthErrors();
+  let valid = true;
+  if (!email) { showFieldErr('loginEmail','loginEmailErr','Email required'); valid=false; }
+  if (!password) { showFieldErr('loginPassword','loginPassErr','Password required'); valid=false; }
+  if (!valid) return;
+  try {
+    const r = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password}) });
+    const d = await r.json();
+    if (d.success) { state.user = d.user; renderNavAuth(); closeModal('authModal'); toast('Welcome back, '+d.user.name+'!', 'success'); }
+    else { showGlobalErr('loginGlobalErr', d.error); }
+  } catch(e) { simulateLogin(email,password); }
+}
+
+async function doRegister() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  clearAuthErrors();
+  if (!name || !email || !password || password.length < 6) {
+    showGlobalErr('regGlobalErr','Please fill all fields (min 6 char password)'); return;
+  }
+  try {
+    const r = await fetch('/api/register', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name,email,password}) });
+    const d = await r.json();
+    if (d.success) { state.user = d.user; renderNavAuth(); closeModal('authModal'); toast('Account created! Welcome, '+d.user.name+'!', 'success'); }
+    else showGlobalErr('regGlobalErr', d.error);
+  } catch(e) { simulateRegister(name,email); }
+}
+
+async function doLogout() {
+  try { await fetch('/api/logout', {method:'POST'}); } catch(e) {}
+  state.user = null; renderNavAuth(); toast('Signed out', 'info');
+}
+
+function simulateLogin(email,pass) {
+  const users = JSON.parse(localStorage.getItem('tgh_users')||'[]');
+  const u = users.find(x => x.email===email && x.password===pass);
+  if (u) { state.user={id:u.id,name:u.name,email:u.email}; renderNavAuth(); closeModal('authModal'); toast('Welcome back, '+u.name+'!','success'); }
+  else showGlobalErr('loginGlobalErr','Invalid credentials');
+}
+function simulateRegister(name,email) {
+  const users = JSON.parse(localStorage.getItem('tgh_users')||'[]');
+  if (users.find(u=>u.email===email)) { showGlobalErr('regGlobalErr','Email already registered'); return; }
+  const u = {id:Date.now(),name,email,password:document.getElementById('regPassword').value};
+  users.push(u); localStorage.setItem('tgh_users',JSON.stringify(users));
+  state.user={id:u.id,name,email}; renderNavAuth(); closeModal('authModal'); toast('Welcome, '+name+'!','success');
+}
+
+function showFieldErr(inputId,errId,msg) {
+  document.getElementById(inputId).classList.add('error');
+  const e = document.getElementById(errId); e.textContent=msg; e.classList.remove('hidden');
+}
+function showGlobalErr(id,msg) {
+  const e=document.getElementById(id); e.textContent=msg; e.classList.remove('hidden');
+}
+
+/* ════════════════════════════════════════════════
+   CHECKOUT
+════════════════════════════════════════════════ */
+function buyNow(id) {
+  addToCart(id, getDetailQty());
+  openCheckout();
+}
+
+function openCheckout() {
+  if (!state.user) {
+    toast('Please login to place an order', 'error');
+    openModal('authModal'); switchToLogin(); return;
+  }
+  if (!state.cart.length) { toast('Cart is empty', 'error'); return; }
+  state.checkoutStep = 1;
+  renderCheckoutStep();
+  if (document.getElementById('cartSidebar').classList.contains('open')) toggleCart();
+  openModal('checkoutModal');
+}
+
+function renderCheckoutStep() {
+  const s = state.checkoutStep;
+  ['step1','step2','step3'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    el.className = 'checkout-step';
+    if (i+1 < s) el.classList.add('done');
+    else if (i+1 === s) el.classList.add('active');
+  });
+  const content = document.getElementById('checkoutContent');
+  const subtotal = state.cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const shipping = subtotal > 10000 ? 0 : 150;
+  const total = subtotal + shipping;
+  const orderSummary = `
+  <div class="order-summary-mini">
+    ${state.cart.map(i=>`<div class="osm-item"><span>${i.brand} ${i.name} ×${i.qty}</span><span>$${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
+    <div class="osm-item"><span>Shipping</span><span>${shipping===0?'Free':'$'+shipping}</span></div>
+    <div class="osm-item total"><span>Total</span><span>$${total.toLocaleString()}</span></div>
+  </div>`;
+
+  if (s === 1) {
+    content.innerHTML = `${orderSummary}
+    <div class="form-group"><label class="form-label">Full Name</label>
+      <input class="form-input" id="co_name" placeholder="Your full name" value="${state.user?.name||''}"/>
+    </div>
+    <div class="form-group"><label class="form-label">Email</label>
+      <input class="form-input" id="co_email" placeholder="your@email.com" value="${state.user?.email||''}"/>
+    </div>
+    <div class="form-group"><label class="form-label">Phone</label>
+      <input class="form-input" id="co_phone" placeholder="+1 (555) 000-0000"/>
+    </div>
+    <div class="form-group"><label class="form-label">Shipping Address</label>
+      <input class="form-input" id="co_address" placeholder="Street address"/>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+      <div class="form-group"><label class="form-label">City</label><input class="form-input" id="co_city" placeholder="City"/></div>
+      <div class="form-group"><label class="form-label">Country</label><input class="form-input" id="co_country" placeholder="Country"/></div>
+    </div>
+    <button class="btn-form" onclick="nextCheckoutStep()">Continue to Payment →</button>`;
+  } else if (s === 2) {
+    content.innerHTML = `${orderSummary}
+    <div class="form-group">
+      <label class="form-label">Payment Method</label>
+      <div class="payment-options">
+        <label class="pay-opt selected" id="pay_card" onclick="selectPay('card')"><input type="radio" name="pay" checked/>💳 Credit Card</label>
+        <label class="pay-opt" id="pay_paypal" onclick="selectPay('paypal')"><input type="radio" name="pay"/>🅿️ PayPal</label>
+        <label class="pay-opt" id="pay_crypto" onclick="selectPay('crypto')"><input type="radio" name="pay"/>₿ Crypto</label>
+        <label class="pay-opt" id="pay_cod" onclick="selectPay('cod')"><input type="radio" name="pay"/>🚚 Cash on Delivery</label>
+      </div>
+    </div>
+    <div id="cardFields">
+      <div class="form-group"><label class="form-label">Card Number</label>
+        <input class="form-input" id="co_card" placeholder="•••• •••• •••• ••••" maxlength="19" oninput="formatCard(this)"/>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+        <div class="form-group"><label class="form-label">Expiry</label><input class="form-input" id="co_expiry" placeholder="MM / YY" maxlength="7"/></div>
+        <div class="form-group"><label class="form-label">CVV</label><input class="form-input" id="co_cvv" placeholder="•••" maxlength="3"/></div>
+      </div>
+    </div>
+    <button class="btn-form" onclick="nextCheckoutStep()">Review Order →</button>
+    <button class="btn-outline" style="width:100%;margin-top:.6rem;padding:.8rem;font-size:.73rem" onclick="state.checkoutStep=1;renderCheckoutStep()">← Back</button>`;
+  } else if (s === 3) {
+    const addr = state.shippingData;
+    content.innerHTML = `${orderSummary}
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:1rem;margin-bottom:1.2rem;font-size:.83rem;color:var(--text2)">
+      <div style="font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem">Shipping To</div>
+      <div>${addr.name}</div><div>${addr.address}, ${addr.city}</div><div>${addr.country}</div><div>${addr.phone}</div>
+    </div>
+    <div class="form-error hidden" id="orderErr"></div>
+    <button class="btn-form" onclick="placeOrder()">✓ Place Order</button>
+    <button class="btn-outline" style="width:100%;margin-top:.6rem;padding:.8rem;font-size:.73rem" onclick="state.checkoutStep=2;renderCheckoutStep()">← Back</button>`;
+  }
+}
+
+function selectPay(method) {
+  state.paymentMethod = method;
+  document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('selected'));
+  document.getElementById('pay_'+method)?.classList.add('selected');
+  document.getElementById('cardFields').style.display = method==='card' ? 'block' : 'none';
+}
+
+function formatCard(input) {
+  let v = input.value.replace(/\D/g,'').substring(0,16);
+  input.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+
+function nextCheckoutStep() {
+  if (state.checkoutStep === 1) {
+    const name = document.getElementById('co_name').value.trim();
+    const address = document.getElementById('co_address').value.trim();
+    const city = document.getElementById('co_city').value.trim();
+    const country = document.getElementById('co_country').value.trim();
+    const phone = document.getElementById('co_phone').value.trim();
+    if (!name || !address || !city || !country) { toast('Please fill all shipping fields', 'error'); return; }
+    state.shippingData = { name, address, city, country, phone };
+  }
+  state.checkoutStep++;
+  renderCheckoutStep();
+}
+
+async function placeOrder() {
+  const subtotal = state.cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const shipping = subtotal > 10000 ? 0 : 150;
+  const total = subtotal + shipping;
+  const orderData = {
+    items: state.cart, address: state.shippingData,
+    paymentMethod: state.paymentMethod || 'card', total
+  };
+  let orderId;
+  try {
+    const r = await fetch('/api/orders', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(orderData) });
+    const d = await r.json();
+    if (d.success) orderId = d.order.id;
+    else { showGlobalErr('orderErr', d.error); return; }
+  } catch(e) {
+    // Simulate
+    orderId = 'TGH' + Date.now();
+    const orders = JSON.parse(localStorage.getItem('tgh_orders')||'[]');
+    orders.push({...orderData, id:orderId, userId:state.user.id, placedAt:new Date().toISOString(), status:'Confirmed'});
+    localStorage.setItem('tgh_orders', JSON.stringify(orders));
+  }
+  // Clear cart
+  state.cart = []; saveCart(); renderCart();
+  // Show success
+  document.getElementById('checkoutContent').innerHTML = `
+  <div class="success-check">
+    <div class="success-icon">✅</div>
+    <div class="success-title">Order Confirmed!</div>
+    <div class="success-subtitle">Thank you for your purchase. Your watch will be delivered in 2-5 business days.</div>
+    <div class="order-id-badge">${orderId}</div>
+    <div style="margin-top:1.5rem;display:flex;gap:.8rem;justify-content:center">
+      <button class="btn-gold" onclick="closeModal('checkoutModal');showPage('orders')">View My Orders</button>
+      <button class="btn-outline" onclick="closeModal('checkoutModal');showPage('shop')">Continue Shopping</button>
+    </div>
+  </div>`;
+  document.getElementById('checkoutSteps').style.display = 'none';
+  toast('Order placed successfully! 🎉', 'success');
+}
+
+/* ════════════════════════════════════════════════
+   ORDERS
+════════════════════════════════════════════════ */
+async function renderOrders() {
+  if (!state.user) {
+    document.getElementById('ordersList').innerHTML = `
+    <div style="text-align:center;padding:4rem;color:var(--text3)">
+      <div style="font-size:3rem;margin-bottom:1rem">🔒</div>
+      <div style="margin-bottom:1.5rem">Please login to view your orders</div>
+      <button class="btn-gold" onclick="openModal('authModal');switchToLogin()">Sign In</button>
+    </div>`; return;
+  }
+  let orders = [];
+  try {
+    const r = await fetch('/api/orders/my');
+    orders = await r.json();
+  } catch(e) {
+    const all = JSON.parse(localStorage.getItem('tgh_orders')||'[]');
+    orders = all.filter(o=>o.userId===state.user.id).reverse();
+  }
+  const el = document.getElementById('ordersList');
+  if (!orders.length) {
+    el.innerHTML = `<div style="text-align:center;padding:4rem;color:var(--text3)">
+      <div style="font-size:3rem;margin-bottom:1rem">📦</div>
+      <div style="margin-bottom:1.5rem">No orders yet</div>
+      <button class="btn-gold" onclick="showPage('shop')">Shop Now</button>
+    </div>`; return;
+  }
+  el.innerHTML = orders.map(o => {
+    const d = new Date(o.placedAt).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+    return `<div class="order-card">
+      <div class="order-card-header" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div>
+          <div class="order-id">${o.id}</div>
+          <div class="order-date">Placed on ${d}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem">
+          <span class="order-status confirmed">${o.status}</span>
+          <div class="order-total">$${o.total.toLocaleString()}</div>
+          <span style="color:var(--text3)">▾</span>
+        </div>
+      </div>
+      <div class="order-items">
+        ${o.items.map(i=>`<div class="order-item-row">
+          <span>${i.brand} ${i.name}</span>
+          <span>×${i.qty}</span>
+          <span style="color:var(--gold)">$${(i.price*i.qty).toLocaleString()}</span>
+        </div>`).join('')}
+        <div style="padding:.8rem 0;font-size:.78rem;color:var(--text3)">
+          📍 Delivering to ${o.address?.city}, ${o.address?.country}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════
+   TOAST
+════════════════════════════════════════════════ */
+function toast(msg, type = 'info') {
+  const icons = { success:'✓', error:'✕', info:'✦' };
+  const el = document.createElement('div');
+  el.className = 'toast-item ' + type;
+  el.innerHTML = `<span>${icons[type]||'✦'}</span>${msg}`;
+  document.getElementById('toast').appendChild(el);
+  setTimeout(() => el.remove(), 3100);
+}
+
+/* ════════════════════════════════════════════════
+   MOBILE MENU
+════════════════════════════════════════════════ */
+function toggleMobileMenu() {
+  const links = document.querySelector('.nav-links');
+  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  links.style.flexDirection = 'column';
+  links.style.position = 'absolute';
+  links.style.top = '70px';
+  links.style.left = '0';
+  links.style.right = '0';
+  links.style.background = 'rgba(12,10,6,.98)';
+  links.style.padding = '1.5rem 5vw';
+  links.style.borderBottom = '1px solid var(--border)';
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+/* ════════════════════════════════════════════════
+   FALLBACK WATCH DATA (when server not running)
+════════════════════════════════════════════════ */
+const FALLBACK_WATCHES = [
+  {id:1,brand:'Rolex',name:'Submariner Date',model:'126610LN',price:12500,originalPrice:14500,discount:14,rating:4.9,reviews:248,stock:5,badge:'Bestseller',image:'https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&q=85',images:['https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&q=85','https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=85'],category:'Dive',caseMaterial:'Oystersteel',caseDiameter:'41mm',movement:'Automatic (Calibre 3235)',waterResistance:'300m',crystalGlass:'Sapphire',bracelet:'Oyster bracelet',dialColor:'Black',powerReserve:'70 hours',warranty:'5 Years',description:'The Submariner is the reference among divers\' watches. Water-resistant to 300 metres with unidirectional rotatable bezel.',features:['Ceramic bezel','Triplock crown','Glidelock clasp','Chromalight display']},
+  {id:2,brand:'Omega',name:'Speedmaster Moonwatch',model:'310.30.42.50.01.001',price:6800,originalPrice:7200,discount:6,rating:4.8,reviews:312,stock:8,badge:'NASA Approved',image:'https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=600&q=85',images:['https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=600&q=85'],category:'Chronograph',caseMaterial:'Stainless Steel',caseDiameter:'42mm',movement:'Manual (Calibre 3861)',waterResistance:'50m',crystalGlass:'Hesalite crystal',bracelet:'Steel bracelet',dialColor:'Black',powerReserve:'50 hours',warranty:'5 Years',description:'The watch that went to the Moon. Worn by NASA astronauts since 1965.',features:['Tachymetre scale','3 sub-dials','Column wheel','METAS certified']},
+  {id:3,brand:'TAG Heuer',name:'Carrera Chronograph',model:'CBN2A1B',price:4200,originalPrice:5500,discount:24,rating:4.7,reviews:189,stock:12,badge:'Hot Deal',image:'https://images.unsplash.com/photo-1609587312208-cea54be969e7?w=600&q=85',images:['https://images.unsplash.com/photo-1609587312208-cea54be969e7?w=600&q=85'],category:'Chronograph',caseMaterial:'Titanium',caseDiameter:'44mm',movement:'Automatic (Calibre Heuer 02)',waterResistance:'100m',crystalGlass:'Sapphire',bracelet:'Titanium',dialColor:'Silver',powerReserve:'80 hours',warranty:'2 Years',description:'Born on the racetrack and perfected over decades. The ultimate motorsport chronograph.',features:['Flyback function','Column wheel','Titanium case','Anti-magnetic']},
+  {id:4,brand:'Patek Philippe',name:'Nautilus 5711',model:'5711/1A-010',price:85000,originalPrice:98000,discount:13,rating:5.0,reviews:67,stock:2,badge:'Rare',image:'https://images.unsplash.com/photo-1639593000826-e4a994b97b4c?w=600&q=85',images:['https://images.unsplash.com/photo-1639593000826-e4a994b97b4c?w=600&q=85'],category:'Luxury',caseMaterial:'Stainless Steel',caseDiameter:'40mm',movement:'Automatic (Cal. 26-330)',waterResistance:'120m',crystalGlass:'Sapphire',bracelet:'Integrated steel',dialColor:'Blue',powerReserve:'45 hours',warranty:'2 Years',description:'The iconic Nautilus designed by Gérald Genta in 1976. Most coveted in watchmaking history.',features:['Date display','Embossed dial','Integrated bracelet','Signed crown']},
+  {id:5,brand:'Audemars Piguet',name:'Royal Oak Offshore',model:'26405CE',price:52000,originalPrice:58000,discount:10,rating:4.9,reviews:94,stock:3,badge:'Limited',image:'https://images.unsplash.com/photo-1585123334904-845d60e97b29?w=600&q=85',images:['https://images.unsplash.com/photo-1585123334904-845d60e97b29?w=600&q=85'],category:'Sport Luxury',caseMaterial:'Ceramic & Titanium',caseDiameter:'44mm',movement:'Automatic (Cal. 3126)',waterResistance:'100m',crystalGlass:'Sapphire',bracelet:'Rubber strap',dialColor:'Carbon grey',powerReserve:'60 hours',warranty:'2 Years',description:'Bolder, more powerful. The Royal Oak Offshore in ceramic and titanium is a masterpiece.',features:['Chronograph','Ceramic bezel','Titanium pushers','Sapphire caseback']},
+  {id:6,brand:'IWC',name:'Portugieser Perpetual',model:'IW503405',price:28500,originalPrice:32000,discount:11,rating:4.8,reviews:143,stock:6,badge:'New',image:'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=600&q=85',images:['https://images.unsplash.com/photo-1612817288484-6f916006741a?w=600&q=85'],category:'Dress',caseMaterial:'18k Rose Gold',caseDiameter:'44.2mm',movement:'Automatic (Cal. 52610)',waterResistance:'30m',crystalGlass:'Sapphire',bracelet:'Alligator leather',dialColor:'Silver',powerReserve:'7 days',warranty:'2 Years',description:'A pinnacle of IWC craftsmanship — perpetual calendar with moon phase and 7-day power reserve.',features:['Perpetual calendar','Moon phase','7-day reserve','18k rose gold']},
+  {id:7,brand:'Breitling',name:'Navitimer B01',model:'AB0137211C1A1',price:8900,originalPrice:9800,discount:9,rating:4.7,reviews:207,stock:9,badge:"Pilot's Choice",image:'https://images.unsplash.com/photo-1604422378831-7d5e93fce72e?w=600&q=85',images:['https://images.unsplash.com/photo-1604422378831-7d5e93fce72e?w=600&q=85'],category:'Aviation',caseMaterial:'Stainless Steel',caseDiameter:'43mm',movement:'Automatic (Calibre B01)',waterResistance:'30m',crystalGlass:'Sapphire',bracelet:'Pilot leather',dialColor:'Black',powerReserve:'70 hours',warranty:'2 Years',description:'The ultimate pilot\'s watch born in 1952. Iconic circular slide rule for in-flight calculations.',features:['Slide rule bezel','COSC certified','3 sub-dials','Flyback chronograph']},
+  {id:8,brand:'Cartier',name:'Santos de Cartier',model:'WSSA0009',price:7400,originalPrice:8200,discount:10,rating:4.8,reviews:178,stock:7,badge:'Iconic',image:'https://images.unsplash.com/photo-1626543553660-6c0a5ebb04de?w=600&q=85',images:['https://images.unsplash.com/photo-1626543553660-6c0a5ebb04de?w=600&q=85'],category:'Dress',caseMaterial:'Steel & Gold',caseDiameter:'39.8mm',movement:'Automatic (Cal. 1847)',waterResistance:'100m',crystalGlass:'Sapphire',bracelet:'Interchangeable',dialColor:'Silver',powerReserve:'40 hours',warranty:'2 Years',description:'The first wristwatch for everyday wear created in 1904. A defining expression of elegance.',features:['QuickSwitch system','SmartLink bracelet','Two-tone case','Roman numerals']}
+];
+</script>
+</body>
+</html>

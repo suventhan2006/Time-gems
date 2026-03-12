@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /data/
+Disallow: /orders
+Disallow: /admin
+
+Sitemap: https://time-gems-hub.lovable.app/sitemap.xmls

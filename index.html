@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Time Gems Hub — Luxury Watches</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<!-- EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 /* ══════════════ RESET & ROOT ══════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -910,6 +912,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:4rem 5vw
 </div>
 
 <script>
+/* EmailJS Configuration */
+emailjs.init("QOcXpl5UovcsafzOg"); // Your public key
+
 /* ════════════════════════════════════════════════
    STATE
 ════════════════════════════════════════════════ */
@@ -1369,6 +1374,33 @@ function showGlobalErr(id,msg) {
 }
 
 /* ════════════════════════════════════════════════
+   EMAIL SEND FUNCTION
+════════════════════════════════════════════════ */
+async function sendOrderConfirmationEmail(orderData) {
+  try {
+    const emailParams = {
+      to_email: orderData.userEmail,
+      to_name: orderData.userName,
+      order_id: orderData.orderId,
+      order_date: new Date(orderData.placedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+      order_total: `$${orderData.total.toLocaleString()}`,
+      order_items: orderData.items.map(item => `${item.brand} ${item.name} (x${item.qty})`).join(', '),
+      shipping_address: `${orderData.address.address}, ${orderData.address.city}, ${orderData.address.country}`,
+      payment_method: orderData.paymentMethod,
+      tracking_number: orderData.trackingNumber || 'TGH' + Math.floor(Math.random() * 1000000),
+      delivery_estimate: '2-5 business days'
+    };
+    
+    const response = await emailjs.send('service_835mej9', 'template_blgntu9', emailParams);
+    console.log('Email sent successfully:', response);
+    return true;
+  } catch (error) {
+    console.error('Failed to send email:', error);
+    return false;
+  }
+}
+
+/* ════════════════════════════════════════════════
    CHECKOUT
 ════════════════════════════════════════════════ */
 function buyNow(id) {
@@ -1480,8 +1512,9 @@ function nextCheckoutStep() {
     const city = document.getElementById('co_city').value.trim();
     const country = document.getElementById('co_country').value.trim();
     const phone = document.getElementById('co_phone').value.trim();
-    if (!name || !address || !city || !country) { toast('Please fill all shipping fields', 'error'); return; }
-    state.shippingData = { name, address, city, country, phone };
+    const email = document.getElementById('co_email').value.trim();
+    if (!name || !address || !city || !country || !email) { toast('Please fill all shipping fields', 'error'); return; }
+    state.shippingData = { name, address, city, country, phone, email };
   }
   state.checkoutStep++;
   renderCheckoutStep();
@@ -1492,24 +1525,76 @@ async function placeOrder() {
   const shipping = subtotal > 10000 ? 0 : 150;
   const total = subtotal + shipping;
   const orderData = {
-    items: state.cart, address: state.shippingData,
-    paymentMethod: state.paymentMethod || 'card', total
+    items: state.cart, 
+    address: state.shippingData,
+    paymentMethod: state.paymentMethod || 'card', 
+    total
   };
+  
   let orderId;
+  let savedOrder;
+  
   try {
-    const r = await fetch('/api/orders', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(orderData) });
+    const r = await fetch('/api/orders', { 
+      method:'POST', 
+      headers:{'Content-Type':'application/json'}, 
+      body:JSON.stringify(orderData) 
+    });
     const d = await r.json();
-    if (d.success) orderId = d.order.id;
-    else { showGlobalErr('orderErr', d.error); return; }
+    if (d.success) {
+      orderId = d.order.id;
+      savedOrder = d.order;
+    } else { 
+      showGlobalErr('orderErr', d.error); 
+      return; 
+    }
   } catch(e) {
-    // Simulate
+    // Simulate order creation
     orderId = 'TGH' + Date.now();
+    savedOrder = {
+      id: orderId,
+      userId: state.user.id,
+      userName: state.user.name,
+      userEmail: state.shippingData.email || state.user.email,
+      items: state.cart,
+      address: state.shippingData,
+      paymentMethod: state.paymentMethod || 'card',
+      total: total,
+      status: 'Confirmed',
+      placedAt: new Date().toISOString()
+    };
     const orders = JSON.parse(localStorage.getItem('tgh_orders')||'[]');
-    orders.push({...orderData, id:orderId, userId:state.user.id, placedAt:new Date().toISOString(), status:'Confirmed'});
+    orders.push(savedOrder);
     localStorage.setItem('tgh_orders', JSON.stringify(orders));
   }
+  
+  // Send order confirmation email
+  const emailData = {
+    userEmail: state.shippingData.email || state.user.email,
+    userName: state.shippingData.name || state.user.name,
+    orderId: orderId,
+    placedAt: savedOrder.placedAt || new Date().toISOString(),
+    total: total,
+    items: state.cart,
+    address: state.shippingData,
+    paymentMethod: state.paymentMethod || 'card',
+    trackingNumber: 'TGH' + Math.floor(Math.random() * 1000000)
+  };
+  
+  // Send email in background (don't block order completion)
+  sendOrderConfirmationEmail(emailData).then(success => {
+    if (success) {
+      console.log('Order confirmation email sent successfully');
+    } else {
+      console.log('Failed to send email, but order was placed');
+    }
+  });
+  
   // Clear cart
-  state.cart = []; saveCart(); renderCart();
+  state.cart = []; 
+  saveCart(); 
+  renderCart();
+  
   // Show success
   document.getElementById('checkoutContent').innerHTML = `
   <div class="success-check">
@@ -1517,13 +1602,16 @@ async function placeOrder() {
     <div class="success-title">Order Confirmed!</div>
     <div class="success-subtitle">Thank you for your purchase. Your watch will be delivered in 2-5 business days.</div>
     <div class="order-id-badge">${orderId}</div>
+    <div style="margin-top:1rem;font-size:.85rem;color:var(--text2)">
+      📧 A confirmation email has been sent to ${state.shippingData.email || state.user.email}
+    </div>
     <div style="margin-top:1.5rem;display:flex;gap:.8rem;justify-content:center">
       <button class="btn-gold" onclick="closeModal('checkoutModal');showPage('orders')">View My Orders</button>
       <button class="btn-outline" onclick="closeModal('checkoutModal');showPage('shop')">Continue Shopping</button>
     </div>
   </div>`;
   document.getElementById('checkoutSteps').style.display = 'none';
-  toast('Order placed successfully! 🎉', 'success');
+  toast('Order placed successfully! 📧 Check your email', 'success');
 }
 
 /* ════════════════════════════════════════════════
